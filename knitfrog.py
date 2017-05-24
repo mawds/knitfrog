@@ -20,28 +20,26 @@ if os.path.isfile(args.outfile) and args.overwrite==False:
 
 chunkstartregex = r'\s*<<(.*)>>=.*$'
 chunkendregex = r'\s*@\s*(%+.*|)$'
-inlinecoderegex = r'(\\Sexpr)(\{.+\})'
 
 commentstring = "% "
+inlinetags = (r'\\Sexpr', r'\\texttt')
 
 inext = os.path.splitext(args.infile)[1]
 outext = os.path.splitext(args.outfile)[1]
 
 KtoT = None # Knitr to Tex indicator
 if inext == ".Rnw" and outext == ".tex":
+    print "Commenting out Knitr chunks"
     chunkstart = re.compile("^" + chunkstartregex)
     chunkend = re.compile("^" + chunkendregex)
-    inlinecode = re.compile(inlinecoderegex)
     KtoT = True
 
-    print "Commenting out Knitr chunks"
 elif inext == ".tex" and outext == ".Rnw":
+    print "Reinstating Knitr chunks"
     chunkstart = re.compile("^" + commentstring + chunkstartregex)
     chunkend = re.compile("^" + commentstring + chunkendregex)
-    inlinecode = re.compile(inlinecoderegex)
     KtoT = False
 
-    print "Commenting out Knitr chunks"
 else:
     print "Unrecognised extensions"
     sys.exit(1)
@@ -55,7 +53,12 @@ inchunk = False
 with open(args.infile, mode="r") as infile:
     with open(args.outfile, mode="w") as outfile:
         for line in infile:
-            outline = inlinecode.sub(r"\\texttt\2", line)
+            if KtoT == True: 
+                outline = re.sub("(" + inlinetags[0] + r")(\{.+\})",
+                    inlinetags[1] + r"\2", line)
+            else:
+                outline = re.sub("(" + inlinetags[1] + r")(\{.+\})",
+                    inlinetags[0] + r"\2", line)
 
             if chunkstart.match(line):
                 inchunk = True
