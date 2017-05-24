@@ -1,7 +1,10 @@
 #!/bin/bash
 rm -f tests/testdoc.* tests/testout.*
 ./knitfrog.py --infile testdoc/testdoc.Rnw --outfile tests/testdoc.tex
-diff tests/testdoc.tex testdoc/testdoc.tex
+latex -output-directory=tests tests/testdoc.tex >/dev/null
+latex -output-directory=testdoc testdoc/testdoc.tex >/dev/null
+
+diff tests/testdoc.dvi testdoc/testdoc.dvi
 exit_status=$?
 if [ $exit_status -ne 0 ]
     then
