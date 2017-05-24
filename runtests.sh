@@ -1,5 +1,5 @@
 #!/bin/bash
-rm tests/testdoc.*
+rm -f tests/testdoc.*
 ./knitfrog.py --infile testdoc/testdoc.Rnw --outfile tests/testdoc.tex
 diff tests/testdoc.tex testdoc/testdoc.tex
 exit_status=$?
