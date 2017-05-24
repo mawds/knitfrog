@@ -1,5 +1,5 @@
 #!/bin/bash
-rm -f tests/testdoc.*
+rm -f tests/testdoc.* tests/testout.*
 ./knitfrog.py --infile testdoc/testdoc.Rnw --outfile tests/testdoc.tex
 diff tests/testdoc.tex testdoc/testdoc.tex
 exit_status=$?
@@ -17,7 +17,7 @@ if [ $exit_status -ne 1 ]
     echo "*** Overwrite test failed"
 fi
 
-./knitfrog.py --infile tests/testdoc.tex --outfile tests/testout.Rnw
+./knitfrog.py --infile tests/testdoc.tex --outfile tests/testout.Rnw 
 diff testdoc/testdoc.Rnw tests/testout.Rnw
 
 
