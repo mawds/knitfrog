@@ -7,23 +7,25 @@ import os.path
 import sys
 
 parser=argparse.ArgumentParser()
-parser.add_argument("infile")
-parser.add_argument("--outfile", required=False)
+parser.add_argument("--infile", required = True )
+parser.add_argument("--outfile", required = True)
+parser.add_argument("--overwrite", dest="overwrite", action="store_true")
+parser.add_argument("--nooverwrite", dest="overwrite", action="store_false")
+parser.set_defaults(overwrite = False)
 args=parser.parse_args()
 
+if os.path.isfile(args.outfile) & args.overwrite==False:
+    print "Use --overwrite to allow existing files to be overwritten"
+    sys.exit(1)
 
 chunkstart = re.compile(r'^\s*<<(.*)>>=.*$')
 chunkend = re.compile(r'^\s*@\s*(%+.*|)$')
 inlineCode = re.compile(r'(\\Sexpr)(\{.+\})')
 
-if args.outfile is not None:
-    outfile = args.outfile
-else:
-    outfile = os.path.splitext(args.infile)[0] + ".tex" 
 
 inchunk = False
 with open(args.infile, mode="r") as infile:
-    with open(outfile, mode="w") as outfile:
+    with open(args.outfile, mode="w") as outfile:
         for line in infile:
             outline = inlineCode.sub(r"\\texttt\2", line)
             
