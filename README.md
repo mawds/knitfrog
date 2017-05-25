@@ -1,5 +1,5 @@
 # knitfrog
-Scripts to (un)comment Knitr chunks in Rnw documents
+A script to (un)comment Knitr chunks in Rnw documents
 
 [Knitr](https://yihui.name/knitr/) provides "Elegant, flexible and fast dynamic report generation with R".   Occasionally it can be useful to just focus on the LaTeX source, and not worry about the R code.  For example, if working on a project that requires a live internet connection when working offline.
 
