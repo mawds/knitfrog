@@ -68,7 +68,6 @@ with open(args.infile, mode="r") as infile:
                 continue
             if KtoT is False and outline.rstrip() == commandstring:
                 print "deleting commandstring"
-                outfile.write("")
                 continue
             if chunkstart.match(line):
                 inchunk = True
