@@ -15,7 +15,7 @@ parser.set_defaults(overwrite = False)
 args=parser.parse_args()
 
 if os.path.isfile(args.outfile) and args.overwrite==False:
-    print "Use --overwrite to allow existing files to be overwritten"
+    print("Use --overwrite to allow existing files to be overwritten")
     sys.exit(1)
 
 chunkstartregex = r'\s*<<(.*)>>=.*$'
@@ -31,23 +31,23 @@ outext = os.path.splitext(args.outfile)[1]
 
 KtoT = None # Knitr to Tex indicator
 if inext == ".Rnw" and outext == ".tex":
-    print "Commenting out Knitr chunks"
+    print ("Commenting out Knitr chunks")
     chunkstart = re.compile("^" + chunkstartregex)
     chunkend = re.compile("^" + chunkendregex)
     KtoT = True
 
 elif inext == ".tex" and outext == ".Rnw":
-    print "Reinstating Knitr chunks"
+    print ("Reinstating Knitr chunks")
     chunkstart = re.compile("^" + commentstring + chunkstartregex)
     chunkend = re.compile("^" + commentstring + chunkendregex)
     KtoT = False
 
 else:
-    print "Unrecognised extensions"
+    print ("Unrecognised extensions")
     sys.exit(1)
 
 if KtoT is None:
-    print "Conversion direction not set"
+    print ("Conversion direction not set")
     sys.exit(1)
 
 
